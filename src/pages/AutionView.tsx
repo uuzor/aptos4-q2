@@ -236,7 +236,7 @@ const AutionView: React.FC<AutionViewProps> = ({ marketplaceAddr }) => {
       <Title level={2} style={{ marginBottom: "20px" }}>Auctions</Title>
   
       {/* Filter Buttons */}
-      <div style={{ marginBottom: "20px" }}>
+      <div style={{ marginBottom: "20px", }}>
         <Radio.Group
           value={rarity}
           onChange={(e) => {
@@ -253,7 +253,8 @@ const AutionView: React.FC<AutionViewProps> = ({ marketplaceAddr }) => {
           <Radio.Button value={4}>Super Rare</Radio.Button>
 
         </Radio.Group>
-        <Checkbox value={owned} onChange={(e)=>{
+        
+        <Checkbox style={{ marginRight: "20px" }} className="h-10" value={owned} onChange={(e)=>{
           const ownedAuctions = e.target.value;
           console.log(typeof ownedAuctions)
           setOwned(ownedAuctions)
@@ -291,12 +292,13 @@ const AutionView: React.FC<AutionViewProps> = ({ marketplaceAddr }) => {
               }}
               cover={<img alt={nft.name} src={nft.uri} />}
               actions={[<>
-                <Button type="link" onClick={() => handleBuyClick(nft)}>
+                {
+                  nft.owner != account?.address? <Button type="link" onClick={() => handleBuyClick(nft)}>
                   Bid Price
-                </Button>
-                <Button  type="link" onClick={() => handleAuctionCloseAuctonClick(nft)}  >
+                </Button>: <Button  type="link" onClick={() => handleAuctionCloseAuctonClick(nft)}  >
                   Close Auction
                 </Button>
+                }
                 </>
               ]}
             >

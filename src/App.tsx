@@ -55,7 +55,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MarketView marketplaceAddr={marketplaceAddr} />} />
           <Route path="/my-nfts" element={<MyNFTs />} />
-          <Route path="/autions" element={<AutionView marketplaceAddr={marketplaceAddr}  />} />
+          <Route path="/auctions" element={<AutionView marketplaceAddr={marketplaceAddr}  />} />
         </Routes>
 
 

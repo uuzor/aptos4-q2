@@ -32,13 +32,13 @@ export function AuctionNFT({ selectedNft, setSelectedNft, fetchUserNFTs, isModal
       const response = await (window as any).aptos.signAndSubmitTransaction(entryFunctionPayload);
       await client.waitForTransaction(response.hash);
 
-      message.success("NFT listed for sale successfully!");
+      message.success("NFT auctioned for sale successfully!");
       setIsModalAuctionVisible(false);
       setSalePrice("");
       fetchUserNFTs();
     } catch (error) {
-      console.error("Error listing NFT for sale:", error);
-      message.error("Failed to list NFT for sale.");
+      console.error("Error auctioning NFT for sale:", error);
+      message.error("Failed to auction NFT for sale.");
     }
   };
 
@@ -56,15 +56,15 @@ export function AuctionNFT({ selectedNft, setSelectedNft, fetchUserNFTs, isModal
   }
   return (
     <Modal
-      title="Sell NFT"
+      title="Auction NFT"
       visible={isModalAuctionVisible}
       onCancel={handleCancel}
       footer={[
-        <Button key="cancel_listing" onClick={handleCancel}>
+        <Button key="cancel_Auction" onClick={handleCancel}>
           Cancel
         </Button>,
-        <Button key="confirm_listing" type="primary" onClick={handleConfirmAuction}>
-          Confirm Listing
+        <Button key="confirm_Auction" type="primary" onClick={handleConfirmAuction}>
+          Confirm Auction
         </Button>,
       ]}
     >

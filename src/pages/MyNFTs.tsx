@@ -5,6 +5,7 @@ import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { AuctionNFT } from "../components/AuctionNFT";
 import { MARKETPLACE_ADDRESS } from "../utils";
 import { TransferNFTModal } from "../components/TransferNFTModal";
+import { Link } from "react-router-dom";
 
 const { Title } = Typography;
 const { Meta } = Card;
@@ -226,9 +227,9 @@ const MyNFTs: React.FC = () => {
                 >
                   
               {
-                nft.auctioned ? <Button type="link" onClick={() =>{}}>
+                nft.auctioned ? <Link to={"/auctions"}>
                 Go to auction
-              </Button>:
+              </Link>:
               <> <Button type="link" onClick={() => handleAuctionClick(nft)}>
                 Auction
               </Button>
