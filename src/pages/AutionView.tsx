@@ -65,7 +65,7 @@ const AutionView: React.FC<AutionViewProps> = ({ marketplaceAddr }) => {
   })
 
   useEffect(() => {
-    handleFetchNfts(undefined, false);
+    handleFetchNfts(undefined, owned);
   }, []);
 
   const handleFetchNfts = async (selectedRarity: number | undefined, owned:boolean) => {
@@ -118,7 +118,7 @@ const AutionView: React.FC<AutionViewProps> = ({ marketplaceAddr }) => {
                 // getting nft details
                 const nftDetails = await client.view({
                   function: `${marketplaceAddr}::NFTMarketplace::get_nft_details`,
-                  arguments: [marketplaceAddr, id],
+                  arguments: [marketplaceAddr, nftId],
                   type_arguments: [],
                 });
                 const [_, owner, name, description, uri, price, forSale, rarity] = nftDetails as [
@@ -155,7 +155,9 @@ const AutionView: React.FC<AutionViewProps> = ({ marketplaceAddr }) => {
             })
         )).filter((nft): nft is any => nft !== null);
         console.log("User NFTs:", userNFTs);
-        const filteredNfts = userNFTs.filter((nft) => (selectedRarity === undefined || nft.rarity === selectedRarity)&& (owned ==false || nft.owner == account?.address));
+        console.log(owned === false)
+        console.log(account!.address)
+        const filteredNfts = userNFTs.filter((nft) => (selectedRarity === undefined || nft.rarity === selectedRarity)&& (owned === false || nft.owner === account?.address));
         setAuctions(filteredNfts);
         // Filter NFTs based on `for_sale` property and rarity if selected
        
@@ -254,11 +256,9 @@ const AutionView: React.FC<AutionViewProps> = ({ marketplaceAddr }) => {
 
         </Radio.Group>
         
-        <Checkbox style={{ marginRight: "20px" }} className="h-10" value={owned} onChange={(e)=>{
-          const ownedAuctions = e.target.value;
-          console.log(typeof ownedAuctions)
-          setOwned(ownedAuctions)
-          handleFetchNfts(rarity === 'all' ? undefined : rarity, owned);
+        <Checkbox style={{ marginLeft: "20px" }} className="h-10" value={owned} onChange={(e)=>{
+          setOwned(e.target.checked);
+          handleFetchNfts(rarity === 'all' ? undefined : rarity, e.target.checked);
         }} >My Auctions</Checkbox>
       </div>
   
