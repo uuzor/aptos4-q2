@@ -43,9 +43,6 @@ const rarityLabels: { [key: number]: string } = {
   4: "Super Rare",
 };
 
-const truncateAddress = (address: string, start = 6, end = 4) => {
-  return `${address.slice(0, start)}...${address.slice(-end)}`;
-};
 
 const AutionView: React.FC<AutionViewProps> = ({ marketplaceAddr }) => {
   
@@ -61,7 +58,7 @@ const AutionView: React.FC<AutionViewProps> = ({ marketplaceAddr }) => {
   const [selectedNft, setSelectedNft] = useState<AUCTION | null>(null);
   const [owned, setOwned]= useState(false)
   const [bidPrice, setBidPrice] = useState(()=>{
-    return (selectedNft?.highestBid != undefined ? selectedNft?.highestBid /100000000 :1).toString()
+    return (selectedNft?.highestBid !== undefined ? selectedNft?.highestBid /100000000 :1).toString()
   })
 
   useEffect(() => {
@@ -155,8 +152,7 @@ const AutionView: React.FC<AutionViewProps> = ({ marketplaceAddr }) => {
             })
         )).filter((nft): nft is any => nft !== null);
         console.log("User NFTs:", userNFTs);
-        console.log(owned === false)
-        console.log(account!.address)
+        
         const filteredNfts = userNFTs.filter((nft) => (selectedRarity === undefined || nft.rarity === selectedRarity)&& (owned === false || nft.owner === account?.address));
         setAuctions(filteredNfts);
         // Filter NFTs based on `for_sale` property and rarity if selected
@@ -221,11 +217,6 @@ const AutionView: React.FC<AutionViewProps> = ({ marketplaceAddr }) => {
   }
 
   const paginatedAuctions = auctions.slice((currentPage - 1) * pageSize, currentPage * pageSize);
-  const formatDate =(d:number)=>{
-    const startTime = new Date(d *1000)
-
-   return  startTime.toDateString() + " " + startTime.toTimeString()
-  }
   return (
     <div
       style={{  
@@ -293,7 +284,7 @@ const AutionView: React.FC<AutionViewProps> = ({ marketplaceAddr }) => {
               cover={<img alt={nft.name} src={nft.uri} />}
               actions={[<>
                 {
-                  nft.owner != account?.address? <Button type="link" onClick={() => handleBuyClick(nft)}>
+                  nft.owner !== account?.address? <Button type="link" onClick={() => handleBuyClick(nft)}>
                   Bid Price
                 </Button>: <Button  type="link" onClick={() => handleAuctionCloseAuctonClick(nft)}  >
                   Close Auction
@@ -313,10 +304,9 @@ const AutionView: React.FC<AutionViewProps> = ({ marketplaceAddr }) => {
               <Meta title={nft.name} description={`Price: ${nft.price} APT`} />
               <p>{nft.description}</p>
               <p>ID: {nft.id}</p>
-              {/* <p>Owner: {truncateAddress(nft.owner)}</p> */}
+              
               <p>Bidding Starts from: {nft.highestBid/100000000} APT</p>
-              {/* <p>Bidding starts on:{formatDate(nft.startTime)} </p>
-              <p>Bidding ends on: {formatDate(nft.closeTime)}</p> */}
+              
               <Countdown startDate={Number(nft.startTime)} endDate={Number(nft.closeTime)} />
             </Card>
           </Col>
@@ -358,7 +348,7 @@ const AutionView: React.FC<AutionViewProps> = ({ marketplaceAddr }) => {
             <p><strong>Description:</strong> {selectedNft.description}</p>
             <p><strong>Rarity:</strong> {rarityLabels[selectedNft.rarity]}</p>
             <p><strong>Price:</strong> {selectedNft.price} APT</p>
-            {/* <p><strong>Owner:</strong> {truncateAddress(selectedNft.owner)}</p> */}
+            
             <p>Minimum bid is {selectedNft.highestBid/100000000} APT</p>
             <Input
               type="number"
